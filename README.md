@@ -1,2 +1,2 @@
 # tf-aws-infra
-Terraform..
+Terraform

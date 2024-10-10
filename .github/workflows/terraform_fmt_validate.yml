@@ -1,7 +1,7 @@
 name: Terraform Validations
 
 on:
-  push:
+  pull_request:
     branches: [Assignment03]
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
       run: terraform init
 
     - name: Terraform Format
-      run: terraform fmt
+      run: terraform fmt -check -recursive
 
     - name: Terraform validate
       run: terraform validate

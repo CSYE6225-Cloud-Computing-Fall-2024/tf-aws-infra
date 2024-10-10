@@ -9,3 +9,9 @@ variable "private_subnet_cidrs" {
  description = "Private Subnet CIDR values"
  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 }
+
+variable "azs" {
+ type        = list(string)
+ description = "Availability Zones"
+ default     = ["us-east-1d", "us-east-1e", "us-east-1f"]
+}

@@ -14,4 +14,12 @@ resource "aws_instance" "app_instance" {
   tags = {
     Name = "App EC2 Instance"
   }
+
+  user_data = <<-EOF
+    #!/bin/bash
+    echo "DB_HOST=${aws_db_instance.csye6225_rds.endpoint}" >> /etc/environment
+    echo "DB_USER=${var.db_user}" >> /etc/environment
+    echo "DB_PASS=${var.db_pass}" >> /etc/environment
+    echo "DB_NAME=${var.db_name}" >> /etc/environment
+  EOF
 }

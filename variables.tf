@@ -43,3 +43,15 @@ variable "root_volume_size" {
   type        = number
   default     = 25 # Default size is 25GB if none is provided
 }
+
+variable "db_user" {
+  default = "postgres"
+}
+
+variable "db_pass" {
+  default = "Northeastern2024"
+}
+
+variable "db_name" {
+  default = "webapp"
+}

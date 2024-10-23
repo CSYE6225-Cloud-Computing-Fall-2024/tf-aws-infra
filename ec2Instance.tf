@@ -17,9 +17,30 @@ resource "aws_instance" "app_instance" {
 
   user_data = <<-EOF
     #!/bin/bash
-    echo "DB_HOST=${aws_db_instance.csye6225_rds.endpoint}" >> /etc/environment
-    echo "DB_USER=${var.db_user}" >> /etc/environment
-    echo "DB_PASS=${var.db_pass}" >> /etc/environment
+
+    # Log to a custom file for validation
+    LOGFILE="/var/log/userdata.log"
+
+    echo "Starting user_data script..." >> $LOGFILE
+
+    # Write environment variables to /etc/environment
+    echo "DB_ENDPOINT=${aws_db_instance.csye6225_rds.endpoint}" >> /etc/environment
+    echo "DB_URL=${var.jdbc_prefix}://${aws_db_instance.csye6225_rds.endpoint}/${var.db_name}" >> /etc/environment
+    echo "DB_USERNAME=${var.db_user}" >> /etc/environment
+    echo "DB_PASSWORD=${var.db_pass}" >> /etc/environment
     echo "DB_NAME=${var.db_name}" >> /etc/environment
+
+    # Validate if environment variables were written to /etc/environment
+    if grep -q "DB_URL=" /etc/environment && grep -q "DB_USERNAME=" /etc/environment; then
+      echo "Environment variables written successfully." >> $LOGFILE
+    else
+      echo "Error: Environment variables not written correctly." >> $LOGFILE
+    fi
+
+    # Starting the Spring Boot application
+    echo "Starting Spring Boot application..." >> $LOGFILE
+
+    # Check if the service is running after the instance is up
+    sudo systemctl status springbootapp >> $LOGFILE 2>&1
   EOF
 }

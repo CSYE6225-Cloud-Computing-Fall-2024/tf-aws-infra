@@ -38,7 +38,7 @@ resource "aws_db_instance" "csye6225_rds" {
 }
 
 # Create DB Subnet Group for RDS instances in private subnets
-# what id * in Subnet_ids
+# what id * in Subnet_ids // Ans --> it takes all the private subnets
 resource "aws_db_subnet_group" "db_subnet" {
   name       = "csye6225-db-subnet-group"
   subnet_ids = aws_subnet.private_subnets[*].id

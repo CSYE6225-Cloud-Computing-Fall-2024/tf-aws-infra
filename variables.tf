@@ -130,3 +130,35 @@ variable "db_parameter_group_family" {
   type        = string
   default     = "postgres16" # Default value, can be overridden
 }
+
+# Spring Boot-specific environment variables
+variable "banner_mode" {
+  default = "off"
+}
+
+variable "application_name" {
+  default = "webapp"
+}
+
+variable "show_sql" {
+  default = "true"
+}
+
+variable "non_contextual_creation" {
+  default = "true"
+}
+
+variable "hibernate_dialect" {
+  default = "org.hibernate.dialect.PostgreSQLDialect"
+}
+
+variable "hibernate_ddl_auto" {
+  default = "update"
+}
+
+variable "volume_type" {
+  default = "gp2"
+}
+variable "delete_on_termination" {
+  default = "true"
+}

@@ -15,6 +15,8 @@ resource "aws_instance" "app_instance" {
     Name = "App EC2 Instance"
   }
 
+  iam_instance_profile = aws_iam_instance_profile.example_instance_profile.name # Attach the IAM profile here
+
   user_data = <<-EOF
     #!/bin/bash
 

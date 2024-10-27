@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "example_bucket" {
-  bucket = uuid()  # Generates a UUID for the bucket name
-  acl    = "private"
+  bucket = uuid() # Generates a UUID for the bucket name
+  #   acl    = "private"
 
   # Allow Terraform to delete the bucket, even if not empty.
   force_destroy = true
@@ -11,7 +11,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example_bucket_en
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm = var.s3_bucket_server_side_encryption_algorithm_name
     }
   }
 }
@@ -21,7 +21,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "example_bucket_lifecycle" {
 
   rule {
     id     = "transition_to_ia"
-    enabled = true
+    status = "Enabled"
+    #     enabled = true
 
     transition {
       days          = 30

@@ -162,3 +162,35 @@ variable "volume_type" {
 variable "delete_on_termination" {
   default = "true"
 }
+
+# Define variables if not already defined
+variable "domain_name" {
+  description = "The domain name for the application"
+  type        = string
+}
+
+variable "subdomain" {
+  description = "The subdomain to be created"
+  type        = string
+  default     = "dev"
+}
+
+variable "route53_zone_id" {
+  description = "The Route 53 hosted zone ID"
+  type        = string
+}
+
+variable "record_type" {
+  type    = string
+  default = "A"
+}
+
+variable "record_ttl" {
+  type    = number
+  default = 60
+}
+
+variable "s3_bucket_server_side_encryption_algorithm_name" {
+  type    = string
+  default = "AES256"
+}

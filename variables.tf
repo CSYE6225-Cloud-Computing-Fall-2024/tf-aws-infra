@@ -194,3 +194,24 @@ variable "s3_bucket_server_side_encryption_algorithm_name" {
   type    = string
   default = "AES256"
 }
+
+# AWS Profile Name
+variable "aws_profile_name" {
+  description = "The AWS profile to use, defaulting to 'dev'"
+  type        = string
+  default     = "dev"
+}
+
+# Maximum File Size for Multipart Uploads
+variable "max_file_size" {
+  description = "The maximum file size for file uploads, defaulting to 1MB"
+  type        = string
+  default     = "1MB"
+}
+
+# Maximum Request Size for Multipart Requests
+variable "max_request_size" {
+  description = "The maximum request size for multipart requests, defaulting to 1MB"
+  type        = string
+  default     = "1MB"
+}

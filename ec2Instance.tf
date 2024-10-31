@@ -15,7 +15,9 @@ resource "aws_instance" "app_instance" {
     Name = "App EC2 Instance"
   }
 
-  iam_instance_profile = aws_iam_instance_profile.example_instance_profile.name # Attach the IAM profile here
+  # Attach the consolidated IAM instance profile
+  iam_instance_profile = aws_iam_instance_profile.app_instance_profile.name
+
 
   user_data = <<-EOF
     #!/bin/bash
@@ -38,12 +40,26 @@ resource "aws_instance" "app_instance" {
     echo "HIBERNATE_DIALECT_POSTGRESDIALECT=${var.hibernate_dialect}" >> /etc/environment
     echo "HIBERNATE_DDL_AUTO=${var.hibernate_ddl_auto}" >> /etc/environment
 
+    # S3 Bucket Configuration
+    echo "AWS_S3_BUCKET_NAME=${aws_s3_bucket.example_bucket.id}" >> /etc/environment
+    echo "AWS_PROFILE_NAME=${var.aws_profile_name}" >> /etc/environment
+    echo "AWS_REGION=${var.region}" >> /etc/environment
+
+    # Define the Image max Size
+    echo "spring.servlet.multipart.max-file-size=${var.max_file_size}" >> /etc/environment
+    echo "spring.servlet.multipart.max-request-size=${var.max_request_size}" >> /etc/environment
+
+
     # Validate if environment variables were written to /etc/environment
     if grep -q "DB_URL=" /etc/environment && grep -q "DB_USERNAME=" /etc/environment; then
       echo "Environment variables written successfully." >> $LOGFILE
     else
       echo "Error: Environment variables not written correctly." >> $LOGFILE
     fi
+
+    # Restart the CloudWatch Agent service to apply any changes
+    sudo systemctl restart amazon-cloudwatch-agent
+    echo "CloudWatch Agent restarted." >> $LOGFILE
 
     # Starting the Spring Boot application
     echo "Starting Spring Boot application..." >> $LOGFILE

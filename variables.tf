@@ -215,3 +215,9 @@ variable "max_request_size" {
   type        = string
   default     = "1MB"
 }
+
+variable "key_name" {
+  description = "The name of the SSH key pair to use for SSH access to the instances"
+  type        = string
+  default     = "ec2"
+}

@@ -1,3 +1,6 @@
+#-----commented ec2Instance.tf beacuse for Assignment 07 we are using ec2LaunchTemplate.tf--------#
+
+/*
 resource "aws_instance" "app_instance" {
   ami                         = var.ami_id        # Using variable for AMI ID
   instance_type               = var.instance_type # Using variable for instance type
@@ -68,3 +71,4 @@ resource "aws_instance" "app_instance" {
     sudo systemctl status springbootapp >> $LOGFILE 2>&1
   EOF
 }
+*/

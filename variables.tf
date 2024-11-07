@@ -221,3 +221,17 @@ variable "key_name" {
   type        = string
   default     = "ec2"
 }
+
+
+variable "desired_capacity" { default = 3 }
+variable "max_size" { default = 5 }
+variable "min_size" { default = 3 }
+variable "health_check_type" { default = "ELB" }
+variable "cpu_high_threshold" { default = 12 }
+variable "cpu_low_threshold" { default = 8 }
+variable "scale_up_adjustment" { default = 1 }
+variable "scale_down_adjustment" { default = -1 }
+variable "cooldown" { default = 60 }
+variable "environment" { default = "Production" }
+variable "asg_name" { default = "CSYE6225-ASG" }
+variable "instance_name" { default = "CSYE6225-EC2" }

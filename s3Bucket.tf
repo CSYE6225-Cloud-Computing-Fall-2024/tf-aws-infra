@@ -1,5 +1,8 @@
+resource "random_uuid" "bucket_uuid" {}
+
 resource "aws_s3_bucket" "example_bucket" {
-  bucket = uuid() # Generates a UUID for the bucket name
+  bucket = random_uuid.bucket_uuid.result
+  #bucket = uuid() # Generates a UUID for the bucket name
   #   acl    = "private"
 
   # Allow Terraform to delete the bucket, even if not empty.

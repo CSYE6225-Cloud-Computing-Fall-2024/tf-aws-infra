@@ -1,5 +1,5 @@
 resource "aws_launch_template" "csye6225_launch_template" {
-  name_prefix   = "csye6225_asg"
+  name          = var.launch_template_name
   image_id      = var.ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -30,6 +30,7 @@ resource "aws_launch_template" "csye6225_launch_template" {
     AWS_REGION                        = var.region
     MAX_FILE_SIZE                     = var.max_file_size
     MAX_REQUEST_SIZE                  = var.max_request_size
+    TOPIC_ARN                         = aws_sns_topic.user_verification_topic.arn
   }))
 
   tag_specifications {
@@ -43,6 +44,7 @@ resource "aws_launch_template" "csye6225_launch_template" {
 }
 
 resource "aws_autoscaling_group" "csye6225_asg" {
+  name             = var.autoscaling_group_name
   desired_capacity = var.desired_capacity
   max_size         = var.max_size
   min_size         = var.min_size

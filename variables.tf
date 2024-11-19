@@ -223,15 +223,68 @@ variable "key_name" {
 }
 
 
-variable "desired_capacity" { default = 3 }
-variable "max_size" { default = 5 }
-variable "min_size" { default = 3 }
-variable "health_check_type" { default = "ELB" }
-variable "cpu_high_threshold" { default = 12 }
-variable "cpu_low_threshold" { default = 8 }
-variable "scale_up_adjustment" { default = 1 }
-variable "scale_down_adjustment" { default = -1 }
-variable "cooldown" { default = 60 }
-variable "environment" { default = "Production" }
-variable "asg_name" { default = "CSYE6225-ASG" }
-variable "instance_name" { default = "CSYE6225-EC2" }
+variable "desired_capacity" {
+  default = 3
+}
+variable "max_size" {
+  default = 5
+}
+variable "min_size" {
+  default = 3
+}
+variable "health_check_type" {
+  default = "ELB"
+}
+variable "cpu_high_threshold" {
+  default = 12
+}
+variable "cpu_low_threshold" {
+  default = 8
+}
+variable "scale_up_adjustment" {
+  default = 1
+}
+variable "scale_down_adjustment" {
+  default = -1
+}
+variable "cooldown" {
+  default = 60
+}
+variable "environment" {
+  default = "Production"
+}
+variable "asg_name" {
+  default = "CSYE6225-ASG"
+}
+variable "instance_name" {
+  default = "CSYE6225-EC2"
+}
+
+variable "mailgun_api_url" {
+  type = string
+}
+variable "mailgun_api_key" {
+  type = string
+}
+variable "from_email" {
+  type = string
+}
+variable "verification_link" {
+  type = string
+}
+
+#variable "domain_url" {
+#type = string
+#}
+
+variable "launch_template_name" {
+  description = "This launch template name is passed in the packer file using github secrets"
+  type        = string
+  default     = "csye6225-launch-template"
+}
+
+variable "autoscaling_group_name" {
+  description = "This auto scalling group name is passed in the packer file using github secrets"
+  type        = string
+  default     = "csye6225-autoscaling-group"
+}

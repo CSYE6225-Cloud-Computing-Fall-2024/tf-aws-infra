@@ -26,6 +26,7 @@ echo "AWS_REGION=${AWS_REGION}" >> /etc/environment
 # Define the Image max Size
 echo "MAX_FILE_SIZE=${MAX_FILE_SIZE}" >> /etc/environment
 echo "MAX_REQUEST_SIZE=${MAX_REQUEST_SIZE}" >> /etc/environment
+echo "TOPIC_ARN=${TOPIC_ARN}" >> /etc/environment
 
 # Load the environment variables
  

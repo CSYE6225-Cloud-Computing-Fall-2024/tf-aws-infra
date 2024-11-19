@@ -273,6 +273,10 @@ variable "verification_link" {
   type = string
 }
 
+#variable "domain_url" {
+#type = string
+#}
+
 variable "launch_template_name" {
   description = "This launch template name is passed in the packer file using github secrets"
   type        = string
@@ -282,5 +286,5 @@ variable "launch_template_name" {
 variable "autoscaling_group_name" {
   description = "This auto scalling group name is passed in the packer file using github secrets"
   type        = string
-  default     = "ccsye6225-autoscaling-group"
+  default     = "csye6225-autoscaling-group"
 }

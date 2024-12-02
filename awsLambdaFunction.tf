@@ -1,4 +1,6 @@
 resource "aws_lambda_function" "user_verification_lambda" {
+  # Add the Lambda execution role permissions to access Secrets Manager and KMS
+  depends_on    = [aws_secretsmanager_secret.email_credentials_secret]
   function_name = "UserVerificationLambda"
   role          = aws_iam_role.lambda_execution_role.arn
   handler       = "com.swamyms.serverless.UserVerificationLambda::handleRequest"
@@ -11,14 +13,14 @@ resource "aws_lambda_function" "user_verification_lambda" {
   # Reference the Lambda code from the local file
   filename = "${path.module}/lambdaFunction/serverless-0.0.1-SNAPSHOT-plain.jar"
 
-  environment {
-    variables = {
-      MAILGUN_API_URL   = var.mailgun_api_url
-      MAILGUN_API_KEY   = var.mailgun_api_key
-      FROM_EMAIL        = var.from_email
-      VERIFICATION_LINK = var.verification_link
-    }
-  }
+  #environment {
+  #variables = {
+  #MAILGUN_API_URL   = var.mailgun_api_url
+  #MAILGUN_API_KEY   = var.mailgun_api_key
+  #FROM_EMAIL        = var.from_email
+  #VERIFICATION_LINK = var.verification_link
+  #}
+  #}
 }
 
 # Lambda Permission to allow SNS to invoke the Lambda function

@@ -284,7 +284,17 @@ variable "launch_template_name" {
 }
 
 variable "autoscaling_group_name" {
-  description = "This auto scalling group name is passed in the packer file using github secrets"
+  description = "This auto scaling group name is passed in the packer file using github secrets"
   type        = string
   default     = "csye6225-autoscaling-group"
+}
+
+variable "kms_key_rotation_period" {
+  description = "Rotation period for KMS key in days"
+  default     = 90
+}
+
+variable "deletion_window_in_days" {
+  description = "Deletion period for KMS key in days"
+  default     = 30
 }

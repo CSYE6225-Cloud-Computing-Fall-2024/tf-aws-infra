@@ -118,3 +118,63 @@ resource "aws_iam_instance_profile" "lambda_instance_profile" {
   name = "lambda-instance-profile"
   role = aws_iam_role.lambda_execution_role.name
 }
+
+resource "aws_iam_policy" "secrets_access_policy" {
+  name = "SecretsAccessPolicy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "secretsmanager:GetSecretValue"
+        Effect = "Allow"
+        "Resource" : [
+          aws_secretsmanager_secret.db_password_secret.arn,
+          aws_secretsmanager_secret.email_credentials_secret.arn
+        ]
+      }
+    ]
+  })
+}
+
+# Attach secrets_access_policy to the EC2 role
+resource "aws_iam_role_policy_attachment" "attach_secrets_access_policy" {
+  role       = aws_iam_role.app_instance_role.name
+  policy_arn = aws_iam_policy.secrets_access_policy.arn
+}
+
+resource "aws_iam_policy" "lambda_secrets_manager_policy" {
+  name        = "LambdaSecretsManagerPolicy"
+  description = "Policy that allows Lambda to access Secrets Manager and KMS"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid      = "AllowSecretsManagerGetSecretValue"
+        Effect   = "Allow"
+        Action   = "secretsmanager:GetSecretValue"
+        Resource = "arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:secret:email-credentials-*"
+      },
+      {
+        Sid    = "AllowKMSDecrypt"
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey",
+          "kms:CreateGrant",
+          "kms:ListGrants",
+        "kms:RevokeGrant"],
+        Resource = "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.id}:key/${aws_kms_key.secrets_key.id}"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_lambda_secrets_manager_policy" {
+  policy_arn = aws_iam_policy.lambda_secrets_manager_policy.arn
+  role       = aws_iam_role.lambda_execution_role.name
+}

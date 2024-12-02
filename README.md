@@ -11,3 +11,13 @@ Repository for course CSYE 6225 Network Structures and Cloud Computing offered b
   - Create execution plan: terraform plan
   - Apply changes mentioned in execution plan: terraform apply
   - Destroy existing vpc: terraform destroy
+
+#Command to Import Demo Certificate
+aws acm import-certificate \
+  --certificate file://path/to/certificate.pem \
+  --private-key file://path/to/private_key.pem \
+  --certificate-chain file://path/to/certificate_chain.pem \
+  --region <region-name>
+
+#Sample cmd to import demo certificate
+aws acm import-certificate --certificate fileb://certificate.pem  --private-key fileb://private_Key.pem --certificate-chain fileb://certificate_chain.pem --region us-east-1

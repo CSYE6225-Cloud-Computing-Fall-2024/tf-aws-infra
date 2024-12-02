@@ -23,7 +23,7 @@ resource "aws_db_instance" "csye6225_rds" {
   allocated_storage      = var.allocated_storage
   db_name                = var.db_name
   username               = var.db_user
-  password               = var.db_pass
+  password               = jsondecode(aws_secretsmanager_secret_version.db_password_secret_version.secret_string).password
   parameter_group_name   = aws_db_parameter_group.rds_pg.name
   vpc_security_group_ids = [aws_security_group.db_security_group.id] # Attach DB security group
   skip_final_snapshot    = var.skip_final_snapshot
@@ -31,6 +31,9 @@ resource "aws_db_instance" "csye6225_rds" {
   multi_az               = var.multi_az            # Disable Multi-AZ
   availability_zone      = element(data.aws_availability_zones.available.names, 0)
   db_subnet_group_name   = aws_db_subnet_group.db_subnet.name # Use private subnet group
+
+  kms_key_id        = aws_kms_key.rds_key.arn
+  storage_encrypted = true # Enable storage encryption
 
   tags = {
     Name = "csye6225 RDS Instance"

@@ -2,8 +2,8 @@ resource "aws_kms_key" "ebs" {
   description             = "EBS KMS key"
   enable_key_rotation     = true
   key_usage               = "ENCRYPT_DECRYPT"
-  deletion_window_in_days = 30
-  rotation_period_in_days = 90
+  deletion_window_in_days = var.deletion_window_in_days
+  rotation_period_in_days = var.kms_key_rotation_period
   policy                  = <<EOF
 {
     "Id": "key-for-ebs",
@@ -87,16 +87,16 @@ resource "aws_kms_key" "rds_key" {
   description             = "KMS key for RDS encryption"
   enable_key_rotation     = true
   key_usage               = "ENCRYPT_DECRYPT"
-  deletion_window_in_days = 30
-  rotation_period_in_days = 90
+  deletion_window_in_days = var.deletion_window_in_days
+  rotation_period_in_days = var.kms_key_rotation_period
 }
 
 resource "aws_kms_key" "s3_key" {
   description             = "KMS key for S3 encryption"
   enable_key_rotation     = true
   key_usage               = "ENCRYPT_DECRYPT"
-  deletion_window_in_days = 30
-  rotation_period_in_days = 90
+  deletion_window_in_days = var.deletion_window_in_days
+  rotation_period_in_days = var.kms_key_rotation_period
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -136,8 +136,8 @@ resource "aws_kms_key" "secrets_key" {
   description             = "KMS key for Secrets Manager"
   enable_key_rotation     = true
   key_usage               = "ENCRYPT_DECRYPT"
-  deletion_window_in_days = 30
-  rotation_period_in_days = 90
+  deletion_window_in_days = var.deletion_window_in_days
+  rotation_period_in_days = var.kms_key_rotation_period
 
 }
 

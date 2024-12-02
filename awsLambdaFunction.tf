@@ -7,20 +7,18 @@ resource "aws_lambda_function" "user_verification_lambda" {
   runtime       = "java17" # Or whichever runtime you're using
 
   # Set the timeout and memory size here
-  timeout     = 30  # Increase to 10 seconds or more if necessary
-  memory_size = 400 # Increase memory size to 256 MB or higher for better performance
+  timeout     = var.lambda_function_timeout     # Increase to 10 seconds or more if necessary
+  memory_size = var.lambda_function_memory_size # Increase memory size to 256 MB or higher for better performance
 
   # Reference the Lambda code from the local file
   filename = "${path.module}/lambdaFunction/serverless-0.0.1-SNAPSHOT-plain.jar"
 
-  #environment {
-  #variables = {
-  #MAILGUN_API_URL   = var.mailgun_api_url
-  #MAILGUN_API_KEY   = var.mailgun_api_key
-  #FROM_EMAIL        = var.from_email
-  #VERIFICATION_LINK = var.verification_link
-  #}
-  #}
+  environment {
+    variables = {
+      SECRET_NAME = var.email_secret_name_mailgun
+      REGION_NAME = var.region
+    }
+  }
 }
 
 # Lambda Permission to allow SNS to invoke the Lambda function

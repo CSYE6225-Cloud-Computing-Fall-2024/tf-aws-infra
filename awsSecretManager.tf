@@ -12,7 +12,7 @@ resource "aws_secretsmanager_secret_version" "db_password_secret_version" {
 
 # Email credentials secret
 resource "aws_secretsmanager_secret" "email_credentials_secret" {
-  name                    = "email-credentials"
+  name                    = var.email_secret_name_mailgun
   recovery_window_in_days = 0
   kms_key_id              = aws_kms_key.secrets_key.id
 }

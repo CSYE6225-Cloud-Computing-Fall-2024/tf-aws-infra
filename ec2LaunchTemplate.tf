@@ -1,4 +1,5 @@
 resource "aws_launch_template" "csye6225_launch_template" {
+  depends_on    = [aws_secretsmanager_secret_version.db_password_secret_version] # Ensure secret is created first
   name          = var.launch_template_name
   image_id      = var.ami_id
   instance_type = var.instance_type
@@ -17,7 +18,7 @@ resource "aws_launch_template" "csye6225_launch_template" {
     DB_ENDPOINT                       = aws_db_instance.csye6225_rds.endpoint
     DB_URL                            = "${var.jdbc_prefix}://${aws_db_instance.csye6225_rds.endpoint}/${var.db_name}"
     DB_USERNAME                       = var.db_user
-    DB_PASSWORD                       = var.db_pass
+    DB_PASSWORD                       = jsondecode(aws_secretsmanager_secret_version.db_password_secret_version.secret_string).password
     DB_NAME                           = var.db_name
     BANNER                            = var.banner_mode
     APPLICATION_NAME                  = var.application_name
@@ -32,6 +33,18 @@ resource "aws_launch_template" "csye6225_launch_template" {
     MAX_REQUEST_SIZE                  = var.max_request_size
     TOPIC_ARN                         = aws_sns_topic.user_verification_topic.arn
   }))
+
+  # Block device mapping with KMS encryption
+  block_device_mappings {
+    device_name = "/dev/sda1"
+
+    ebs {
+      volume_size = 8
+      volume_type = "gp2"
+      encrypted   = true
+      kms_key_id  = aws_kms_key.ebs.arn
+    }
+  }
 
   tag_specifications {
     resource_type = "instance"

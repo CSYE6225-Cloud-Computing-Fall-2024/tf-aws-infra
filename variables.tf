@@ -298,3 +298,18 @@ variable "deletion_window_in_days" {
   description = "Deletion period for KMS key in days"
   default     = 30
 }
+
+variable "email_secret_name_mailgun" {
+  type    = string
+  default = "email-credentials"
+}
+
+variable "lambda_function_timeout" {
+  description = "lambda function timeout in seconds"
+  default     = 30
+}
+
+variable "lambda_function_memory_size" {
+  description = "lambda function memory size"
+  default     = 400
+}
